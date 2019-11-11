@@ -1,0 +1,11 @@
+{
+  "domain": "miio2",
+  "name": "Xiaomi miio vacuum STYJ02YM",
+  "documentation": "",
+  "requirements": [
+    "construct==2.9.45",
+    "python-miio==0.4.7"
+  ],
+  "dependencies": [],
+  "codeowners": []
+}
