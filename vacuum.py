@@ -18,6 +18,7 @@ from homeassistant.components.vacuum import (
     STATE_RETURNING,
     SUPPORT_BATTERY,
     SUPPORT_FAN_SPEED,
+    SUPPORT_LOCATE,
     SUPPORT_PAUSE,
     SUPPORT_RETURN_HOME,
     SUPPORT_SEND_COMMAND,
@@ -60,6 +61,7 @@ SUPPORT_XIAOMI = (
     SUPPORT_STOP |
     SUPPORT_RETURN_HOME |
     SUPPORT_FAN_SPEED |
+    SUPPORT_LOCATE |
     SUPPORT_SEND_COMMAND |
     SUPPORT_BATTERY |
     SUPPORT_START
@@ -216,6 +218,10 @@ class MiroboVacuum2(StateVacuumDevice):
   async def async_return_to_base(self, **kwargs):
     """Set the vacuum cleaner to return to the dock."""
     await self._try_command("Unable to return home: %s", self._vacuum.raw_command, 'set_charge', [1])
+
+  async def async_locate(self, **kwargs):
+    """Locate the vacuum cleaner."""
+    await self._try_command("Unable to locate the botvac: %s", self._vacuum.raw_command, 'set_resetpos', [1])
 
   async def async_send_command(self, command, params=None, **kwargs):
     """Send raw command."""
