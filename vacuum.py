@@ -63,7 +63,7 @@ SERVICE_SCHEMA_CLEAN_ZONE = VACUUM_SERVICE_SCHEMA.extend(
             list,
             [
                 vol.ExactSequence(
-                    [vol.Coerce(int), vol.Coerce(int), vol.Coerce(int), vol.Coerce(int)]
+                    [vol.Coerce(float), vol.Coerce(float), vol.Coerce(float), vol.Coerce(float)]
                 )
             ],
         ),
@@ -76,7 +76,7 @@ SERVICE_SCHEMA_CLEAN_POINT = VACUUM_SERVICE_SCHEMA.extend(
     {
         vol.Required(ATTR_POINT): vol.All(
             vol.ExactSequence(
-                [vol.Coerce(int), vol.Coerce(int)]
+                [vol.Coerce(float), vol.Coerce(float)]
             )
         )
     }
