@@ -120,8 +120,7 @@ STATE_CODE_TO_STATE = {
 }
 
 ALL_PROPS = ["run_state", "mode", "err_state", "battary_life", "box_type", "mop_type", "s_time",
-             "s_area", "suction_grade", "water_grade", "remember_map", "has_map", "is_mop", "has_newmap"]
-
+             "s_area", "suction_grade", "water_grade", "remember_map", "has_map", "is_mop", "has_newmap", "side_brush_hours", "main_brush_hours", "hypa_hours", "mop_hours"]
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
   """Set up the Xiaomi vacuum cleaner robot platform."""
