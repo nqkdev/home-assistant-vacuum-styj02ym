@@ -370,6 +370,20 @@ class MiroboVacuum2(StateVacuumDevice):
       self.vacuum_state = dict(zip(ALL_PROPS, state))
 
       self._available = True
+      
+      # Automatically set mop based on mop_type
+      is_mop = bool(self.vacuum_state['is_mop'])
+      has_mop = bool(self.vacuum_state['mop_type'])
+
+      update_mop = None
+      if is_mop and not has_mop:
+        update_mop = 0
+      elif not is_mop and has_mop:
+        update_mop = 1
+
+      if update_mop is not None:
+        self._vacuum.raw_command('set_mop', [update_mop])
+        self.update()
     except OSError as exc:
       _LOGGER.error("Got OSError while fetching the state: %s", exc)
     except DeviceException as exc:
