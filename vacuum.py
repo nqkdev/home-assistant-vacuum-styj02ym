@@ -292,6 +292,36 @@ class MiroboVacuum2(StateVacuumDevice):
         """Flag vacuum cleaner robot features that are supported."""
         return SUPPORT_XIAOMI
 
+    @property
+    def main_brush_left(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['main_brush_hours']
+
+    @property
+    def side_brush_left(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['side_brush_hours']
+
+    @property
+    def filter_left(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['hypa_hours']
+
+    @property
+    def sensor_dirty_left(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['mop_hours']
+
+    @property
+    def cleaned_area(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['s_area']
+
+    @property
+    def cleaning_time(self):
+        if self.vacuum_state is not None:
+            return self.vacuum_state['s_time']
+
     async def _try_command(self, mask_error, func, *args, **kwargs):
         """Call a vacuum command handling error messages."""
         try:
