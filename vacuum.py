@@ -124,7 +124,7 @@ ALL_PROPS = [
     "run_state",
     "mode",
     "err_state",
-    "battary_life",
+    "battery_life",
     "box_type",
     "mop_type",
     "s_time",
@@ -233,7 +233,7 @@ class MiroboVacuum2(StateVacuumDevice):
     def battery_level(self):
         """Return the battery level of the vacuum cleaner."""
         if self.vacuum_state is not None:
-            return self.vacuum_state['battary_life']
+            return self.vacuum_state['battery_life']
 
     @property
     def fan_speed(self):
