@@ -134,7 +134,11 @@ ALL_PROPS = [
     "remember_map",
     "has_map",
     "is_mop",
-    "has_newmap"]
+    "has_newmap",
+    "side_brush_hours",
+    "main_brush_hours",
+    "hypa_hours",
+    "mop_hours"]
 
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
