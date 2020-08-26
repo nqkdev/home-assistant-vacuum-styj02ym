@@ -206,7 +206,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
         )
 
 
-class MiroboVacuum2(StateVacuumDevice):
+class MiroboVacuum2(StateVacuumEntity):
     """Representation of a Xiaomi Vacuum cleaner robot."""
 
     def __init__(self, name, vacuum):
