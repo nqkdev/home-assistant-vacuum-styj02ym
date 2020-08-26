@@ -392,6 +392,7 @@ class MiroboVacuum2(StateVacuumDevice):
             command,
             params,
         )
+        self.update()
 
     def update(self):
         """Fetch state from the device."""
