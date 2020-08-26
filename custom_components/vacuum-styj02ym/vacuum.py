@@ -135,7 +135,6 @@ ALL_PROPS = [
     "has_map",
     "is_mop",
     "has_newmap",
-    "water_percent",
     "hw_info",
     "sw_info",
     "start_time",
