@@ -385,6 +385,10 @@ class MiroboVacuum2(StateVacuumEntity):
         await self._try_command("Unable to locate the botvac: %s", self._vacuum.raw_command, 'set_resetpos', [1])
 
     async def async_send_command(self, command, params=None, **kwargs):
+        # Home Assistant templating always returns a string, even if array is outputted, fix this so we can use templating in scripts.
+        if isinstance(params, list) and len(params) == 1 and isinstance(params[0], str) and params[0].find('[') > -1 and params[0].find(']') > -1:
+            params = eval(params[0])
+
         """Send raw command."""
         await self._try_command(
             "Unable to send command to the vacuum: %s",
