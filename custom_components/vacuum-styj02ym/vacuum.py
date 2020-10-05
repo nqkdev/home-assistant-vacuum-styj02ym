@@ -422,7 +422,7 @@ class MiroboVacuum2(StateVacuumEntity):
                 update_mop = 2
             elif box_type == 3 and is_mop != 1:
                 update_mop = 1
-            elif box_type == 1 and is_mop != 0
+            elif box_type == 1 and is_mop != 0:
                 update_mop = 0
 
             if update_mop is not None:
