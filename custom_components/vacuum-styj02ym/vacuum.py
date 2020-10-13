@@ -135,15 +135,6 @@ ALL_PROPS = [
     "has_map",
     "is_mop",
     "has_newmap",
-    "side_brush_life",
-    "side_brush_hours",
-    "main_brush_life",
-    "main_brush_hours",
-    "hypa_life",
-    "hypa_hours",
-    "mop_life",
-    "mop_hours",
-    "water_percent",
     "hw_info",
     "sw_info",
     "start_time",
@@ -153,19 +144,13 @@ ALL_PROPS = [
     "repeat_state",
     "light_state",
     "is_charge",
-    "is_work",
-    "cur_mapid",
-    "mop_route",
-    "map_num"]
+    "is_work"
+]
 
 VACUUM_CARD_PROPS_REFERENCES = {
-    'main_brush_left': 'main_brush_hours',
-    'side_brush_left': 'side_brush_hours',
-    'filter_left': 'hypa_hours',
-    'sensor_dirty_left': 'mop_hours',
     'cleaned_area': 's_area',
-    'cleaning_time': 's_time'}
-
+    'cleaning_time': 's_time'
+}
 
 async def async_setup_platform(hass, config, async_add_entities, discovery_info=None):
     """Set up the Xiaomi vacuum cleaner robot platform."""
@@ -400,6 +385,13 @@ class MiroboVacuum2(StateVacuumEntity):
         await self._try_command("Unable to locate the botvac: %s", self._vacuum.raw_command, 'set_resetpos', [1])
 
     async def async_send_command(self, command, params=None, **kwargs):
+        # Home Assistant templating always returns a string, even if array is outputted, fix this so we can use templating in scripts.
+        if isinstance(params, list) and len(params) == 1 and isinstance(params[0], str):
+            if params[0].find('[') > -1 and params[0].find(']') > -1:
+                params = eval(params[0])
+            elif params[0].isnumeric():
+                params[0] = int(params[0])
+
         """Send raw command."""
         await self._try_command(
             "Unable to send command to the vacuum: %s",
@@ -407,6 +399,7 @@ class MiroboVacuum2(StateVacuumEntity):
             command,
             params,
         )
+        # self.update()
 
     def update(self):
         """Fetch state from the device."""
@@ -420,15 +413,17 @@ class MiroboVacuum2(StateVacuumEntity):
 
             self._available = True
 
-            # Automatically set mop based on mop_type
-            is_mop = bool(self.vacuum_state['is_mop'])
-            has_mop = bool(self.vacuum_state['mop_type'])
+            # Automatically set mop based on box_type
+            is_mop = int(self.vacuum_state['is_mop'])
+            box_type = int(self.vacuum_state['box_type'])
 
             update_mop = None
-            if is_mop and not has_mop:
-                update_mop = 0
-            elif not is_mop and has_mop:
+            if box_type == 2 and is_mop != 2:
+                update_mop = 2
+            elif box_type == 3 and is_mop != 1:
                 update_mop = 1
+            elif box_type == 1 and is_mop != 0:
+                update_mop = 0
 
             if update_mop is not None:
                 self._vacuum.raw_command('set_mop', [update_mop])
