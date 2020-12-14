@@ -7,7 +7,7 @@ on:
 name: Create Release from tag
 
 jobs:
-  build:
+  create_release_from_tag:
     name: Create Release
     runs-on: ubuntu-latest
     steps:
