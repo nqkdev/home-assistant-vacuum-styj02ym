@@ -4,5 +4,7 @@
     "country": ["FR", "PL"],
     "domains": ["vacuum"],
     "homeassistant": "0.109.0",
-    "iot_class": "local_poll"
+    "iot_class": "local_poll",
+    "zip_release": true,
+    "filename": "miio2.zip"
 }
