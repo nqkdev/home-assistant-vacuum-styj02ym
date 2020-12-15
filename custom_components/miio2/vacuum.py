@@ -413,20 +413,37 @@ class MiroboVacuum2(StateVacuumEntity):
 
             self._available = True
 
-            # Automatically set mop based on box_type
-            is_mop = int(self.vacuum_state['is_mop'])
+            # Current state of the vacuum
+            # 2: mop only, 1: dust&mop, 0: only vacuum
+            current_mode = int(self.vacuum_state['is_mop'])
+
+            # 3: 2 in 1, 2: water only, 1: dust only, 0: no box
             box_type = int(self.vacuum_state['box_type'])
 
-            update_mop = None
-            if box_type == 2 and is_mop != 2:
-                update_mop = 2
-            elif box_type == 3 and is_mop != 1:
-                update_mop = 1
-            elif box_type == 1 and is_mop != 0:
-                update_mop = 0
+            # True: has the mop attachment, False: no attachment
+            has_mop = bool(self.vacuum_state['mop_type'])
 
-            if update_mop is not None:
-                self._vacuum.raw_command('set_mop', [update_mop])
+            # Automatically set mop based on box_type
+            new_mode = None
+
+            if box_type == 3:
+                # 2 in 1 box
+                if has_mop:
+                    # Vacuum and mop if we have the attachment
+                    new_mode = 1
+                else:
+                    # Just vacuum if we have no mop
+                    new_mode = 0
+            elif box_type == 2:
+                # We only have water, so let's mop.
+                # (Vacuum will error out if we have no mop attachment)
+                new_mode = 2
+            elif box_type == 1:
+                # We only have dust box, mopping not possible
+                new_mode = 0
+
+            if new_mode is not None and new_mode != current_mode:
+                self._vacuum.raw_command('set_mop', [new_mode])
                 self.update()
         except OSError as exc:
             _LOGGER.error("Got OSError while fetching the state: %s", exc)
