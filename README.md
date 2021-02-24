@@ -11,3 +11,8 @@ vacuum:
     token: !secret vacuum
     name: Mi hihi
 ```
+
+### Community Videos & Articles:
+
+* [Home Assistant Xiaomi Vacuum Cleaner Integration](https://youtu.be/VB2YfcTwsmM) - Video
+* [Home Assistant Xiaomi Vacuum Cleaner Integration](https://peyanski.com/home-assistant-xiaomi-vacuum-cleaner-integration/) - Article
