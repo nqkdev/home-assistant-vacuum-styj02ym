@@ -1,6 +1,7 @@
 {
   "domain": "miio2",
   "name": "Xiaomi miio vacuum STYJ02YM",
+  "version": "0.109.0",
   "documentation": "https://github.com/KrzysztofHajdamowicz/home-assistant-vacuum-styj02ym",
   "requirements": [
     "construct==2.9.45",
