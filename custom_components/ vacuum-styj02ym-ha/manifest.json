@@ -2,9 +2,10 @@
   "domain": "miio2",
   "name": "Xiaomi miio vacuum STYJ02YM",
   "documentation": "https://github.com/weslleycsil/vacuum-styj02ym-ha",
+  "version": "1.0.0",
   "requirements": [
-    "construct==2.9.45",
-    "python-miio==0.5.3"
+      "construct==2.10.56",
+      "python-miio==0.5.5"
   ],
   "dependencies": [],
   "codeowners": ["@weslleycsil"]
