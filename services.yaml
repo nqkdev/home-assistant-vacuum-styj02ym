@@ -1,0 +1,58 @@
+vacuum_clean_zone:
+  description: Start the cleaning operation in the selected areas for the number of repeats indicated.
+  fields:
+    entity_id:
+      description: Name of the vacuum entity.
+      example: "vacuum.xiaomi_vacuum_cleaner"
+    zone:
+      description: Array of zones. Each zone is an array of 4 float values. The values are in meters, where (0, 0) is the robot attached to the docking station.
+      example: "[[-1,-1,2,2]]"
+    repeats:
+      description: Number of cleaning repeats for each zone between 1 and 3.
+      example: "1"
+
+vacuum_goto:
+  description: Start cleaning around the specified coordinate (spot cleaning).
+  fields:
+    entity_id:
+      description: Name of the vacuum entity.
+      example: "vacuum.xiaomi_vacuum_cleaner"
+    x_coord:
+      description: x-coordinate.
+      example: "-1"
+    y_coord:
+      description: y-coordinate.
+      example: 2
+
+vacuum_clean_segment:
+  description: Start cleaning of the specified segment(s).
+  fields:
+    entity_id:
+      description: Name of the vacuum entity.
+      example: "vacuum.xiaomi_vacuum_cleaner"
+    segments:
+      description: Segments.
+      example: "[10,11]"
+
+xiaomi_clean_zone:
+  description: Obsoleted, see vacuum_clean_zone.
+  fields:
+    entity_id:
+      description: Name of the vacuum entity.
+      example: "vacuum.xiaomi_vacuum_cleaner"
+    zone:
+      description: Array of zones. Each zone is an array of 4 float values. The values are in meters, where (0, 0) is the robot attached to the docking station.
+      example: "[[-1,-1,2,2]]"
+    repeats:
+      description: Number of cleaning repeats for each zone between 1 and 3.
+      example: "1"
+
+xiaomi_clean_point:
+  description: Obsoleted, see vacuum_goto.
+  fields:
+    entity_id:
+      description: Name of the vacuum entity.
+      example: "vacuum.xiaomi_vacuum_cleaner"
+    point:
+      description: An array specifying a coordinate pair.
+      example: "[-1,2]"
