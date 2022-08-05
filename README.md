@@ -1,16 +1,19 @@
-# Hacky Home assistant support for Xiaomi vacuum STYJ02YM
+# New maintainer is required.
+My Python and Home Assistant knowledge does not allow me to continue ducktaping this code. Any new maintainer will be much appreciated! In the meantime, I recommend switching to https://github.com/nergal/homeassistant-vacuum-viomi
+
+## Hacky Home assistant support for Xiaomi vacuum STYJ02YM
 
 _Original code by [@nqkdev](https://github.com/nqkdev/home-assistant-vacuum-styj02ym), then I forked it and added HACS support._  
 _Next steps were checking forks of original repository and backporting changes in order to provide most feature-complete Home Assistant integration for STYJ02YM._
 
-## This is for STYJ02YM (apparently EU version) with 3.5.3_0017 firmware
+### This is for STYJ02YM (apparently EU version) with 3.5.3_0017 firmware
 
-### Install
+#### Install
 
 - Install it with HACS
 - Add the configuration to configuration.yaml, example:
 
-### Usage
+#### Usage
 
 Add to `configuration.yaml`:
 
