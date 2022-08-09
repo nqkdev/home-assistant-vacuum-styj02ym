@@ -5,7 +5,7 @@
   "documentation": "https://github.com/KrzysztofHajdamowicz/home-assistant-vacuum-styj02ym",
   "requirements": [
     "construct==2.10.56",
-    "python-miio==0.5.11"
+    "python-miio==0.5.12"
   ],
   "dependencies": [],
   "codeowners": ["@nqkdev", "@KrzysztofHajdamowicz"],
