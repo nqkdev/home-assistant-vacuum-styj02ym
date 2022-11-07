@@ -1,0 +1,47 @@
+name: Create and publish Release
+
+on:
+  push:
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  create_release_from_tag:
+    name: Create Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body: |
+            This is an automated created release.
+          draft: false
+          prerelease: false
+
+  release_zip_file:
+    name: Prepare release asset
+    runs-on: ubuntu-latest
+    needs: [create_release_from_tag]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: ZIP files
+        run: |
+          cd /home/runner/work/home-assistant-vacuum-styj02ym/home-assistant-miio2/custom_components/home-assistant-miio2
+          zip release.zip -r ./
+      - name: Upload zip to release
+        uses: radeksurowka/upload-release-action@v1-release
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: /home/runner/work/home-assistant-vacuum-styj02ym/home-assistant-miio2/custom_components/home-assistant-miio2/release.zip
+          asset_name: release.zip
+          tag: ${{ github.ref }}
+          overwrite: true
