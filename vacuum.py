@@ -52,10 +52,16 @@ PLATFORM_SCHEMA = PLATFORM_SCHEMA.extend(
 )
 
 VACUUM_SERVICE_SCHEMA = vol.Schema({vol.Optional(ATTR_ENTITY_ID): cv.comp_entity_ids})
-SERVICE_CLEAN_ZONE = "xiaomi_clean_zone"
+SERVICE_CLEAN_ZONE = "vacuum_clean_zone"
+SERVICE_GOTO = "vacuum_goto"
+SERVICE_CLEAN_SEGMENT = "vacuum_clean_segment"
+SERVICE_OBS_CLEAN_ZONE = "xiaomi_clean_zone"
 SERVICE_CLEAN_POINT = "xiaomi_clean_point"
 ATTR_ZONE_ARRAY = "zone"
 ATTR_ZONE_REPEATER = "repeats"
+ATTR_X_COORD = "x_coord"
+ATTR_Y_COORD = "y_coord"
+ATTR_SEGMENTS = "segments"
 ATTR_POINT = "point"
 SERVICE_SCHEMA_CLEAN_ZONE = VACUUM_SERVICE_SCHEMA.extend(
     {
@@ -72,6 +78,20 @@ SERVICE_SCHEMA_CLEAN_ZONE = VACUUM_SERVICE_SCHEMA.extend(
         ),
     }
 )
+SERVICE_SCHEMA_GOTO = VACUUM_SERVICE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_X_COORD): vol.Coerce(float),
+        vol.Required(ATTR_Y_COORD): vol.Coerce(float),
+    }
+)
+SERVICE_SCHEMA_CLEAN_SEGMENT = VACUUM_SERVICE_SCHEMA.extend(
+    {
+        vol.Required(ATTR_SEGMENTS): vol.Any(
+            vol.Coerce(int),
+            [vol.Coerce(int)]
+        ),
+    }
+)
 SERVICE_SCHEMA_CLEAN_POINT = VACUUM_SERVICE_SCHEMA.extend(
     {
         vol.Required(ATTR_POINT): vol.All(
@@ -83,6 +103,18 @@ SERVICE_SCHEMA_CLEAN_POINT = VACUUM_SERVICE_SCHEMA.extend(
 )
 SERVICE_TO_METHOD = {
     SERVICE_CLEAN_ZONE: {
+        "method": "async_clean_zone",
+        "schema": SERVICE_SCHEMA_CLEAN_ZONE,
+    },
+    SERVICE_GOTO: {
+        "method": "async_goto",
+        "schema": SERVICE_SCHEMA_GOTO,
+    },
+    SERVICE_CLEAN_SEGMENT: {
+        "method": "async_clean_segment",
+        "schema": SERVICE_SCHEMA_CLEAN_SEGMENT,
+    },
+    SERVICE_OBS_CLEAN_ZONE: {
         "method": "async_clean_zone",
         "schema": SERVICE_SCHEMA_CLEAN_ZONE,
     },
@@ -404,6 +436,20 @@ class MiroboVacuum2(StateVacuumEntity):
     await self._try_command("Unable to clean zone: %s", self._vacuum.raw_command, 'set_uploadmap', [1]) \
         and await self._try_command("Unable to clean zone: %s", self._vacuum.raw_command, 'set_zone', result) \
         and await self._try_command("Unable to clean zone: %s", self._vacuum.raw_command, 'set_mode', [3, 1])
+
+  async def async_goto(self, x_coord, y_coord):
+    """Clean area around the specified coordinates"""
+    self._last_clean_point = [x_coord, y_coord]
+    await self._try_command("Unable to goto: %s", self._vacuum.raw_command, 'set_uploadmap', [0]) \
+        and await self._try_command("Unable to goto: %s", self._vacuum.raw_command, 'set_pointclean', [1, x_coord, y_coord])
+
+  async def async_clean_segment(self, segments):
+    """Clean selected segment(s) (rooms)"""
+    if isinstance(segments, int):
+        segments = [segments]
+
+    await self._try_command("Unable to clean segments: %s", self._vacuum.raw_command, 'set_uploadmap', [1]) \
+        and await self._try_command("Unable to clean segments: %s", self._vacuum.raw_command, 'set_mode_withroom', [0, 1, len(segments)] + segments)
 
   async def async_clean_point(self, point):
     """Clean selected area"""
