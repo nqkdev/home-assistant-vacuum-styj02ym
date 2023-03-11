@@ -5,7 +5,7 @@
   "version": "1.0.0",
   "requirements": [
       "construct==2.10.56",
-      "python-miio==0.5.6"
+      "python-miio==0.5.12"
   ],
   "dependencies": [],
   "codeowners": ["@weslleycsil"]

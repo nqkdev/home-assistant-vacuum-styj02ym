@@ -3,7 +3,7 @@ import asyncio
 from functools import partial
 import logging
 
-from miio import DeviceException, Vacuum  # pylint: disable=import-error
+from miio import DeviceException, RoborockVacuum  # pylint: disable=import-error
 import voluptuous as vol
 
 from homeassistant.components.vacuum import (
@@ -25,7 +25,6 @@ from homeassistant.components.vacuum import (
     SUPPORT_START,
     SUPPORT_STATE,
     SUPPORT_STOP,
-    StateVacuumDevice,
     StateVacuumEntity,
 )
 from homeassistant.const import (
@@ -144,7 +143,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
   # Create handler
   _LOGGER.info("Initializing with host %s (token %s...)", host, token[:5])
-  vacuum = Vacuum(host, token)
+  vacuum = RoborockVacuum(host, token)
 
   mirobo = MiroboVacuum2(name, vacuum)
   hass.data[DATA_KEY][host] = mirobo
@@ -262,7 +261,6 @@ class MiroboVacuum2(StateVacuumEntity):
   def supported_features(self):
     """Flag vacuum cleaner robot features that are supported."""
     return SUPPORT_XIAOMI
-
 
   async def _try_command(self, mask_error, func, *args, **kwargs):
     """Call a vacuum command handling error messages."""
