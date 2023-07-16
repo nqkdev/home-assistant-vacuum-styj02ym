@@ -225,7 +225,7 @@ async def async_setup_platform(hass, config, async_add_entities, discovery_info=
 
         for vacuum in target_vacuums:
             update_coro = vacuum.async_update_ha_state(True)
-            update_tasks.append(update_coro)
+            update_tasks.append(asyncio.create_task(update_coro))
 
         if update_tasks:
             await asyncio.wait(update_tasks)
